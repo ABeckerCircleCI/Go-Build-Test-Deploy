@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Matching Test Files
           command: |
-            TESTS=$(circleci tests glob "path/to/tests/**/*.go")
+            TESTS=$(circleci tests glob "/**/*.go")
             echo "Test files: $TESTS"
       - run: go test -v 2>&1 ./... | circleci tests split --split-by=timings | go-junit-report -set-exit-code > /tmp/report.xml
       - store_test_results:
