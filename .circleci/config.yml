@@ -36,9 +36,9 @@ jobs:
           command: |
             go test -v $(circleci tests glob "$TESTS") 2>&1 | go-junit-report -set-exit-code > /tmp/report.xml
       - store_test_results:
-          path: /tmp/report.xml
+          path: /previous-test-results/report.xml
       - store_artifacts:
-          path: /tmp/report.xml
+          path: /previous-test-results/report.xml
 
   integration:
     executor: go
