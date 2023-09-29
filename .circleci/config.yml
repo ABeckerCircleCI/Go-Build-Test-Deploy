@@ -18,7 +18,7 @@ jobs:
       - go/mod-download
       - run: go install github.com/jstemmer/go-junit-report/v2@latest
       - go/save-cache
-      - run: circleci tests split --split-by=timings
+      - run: circleci tests split main_test.go --split-by=timings
       - run: go test -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
       - store_test_results:
           path: report.xml
