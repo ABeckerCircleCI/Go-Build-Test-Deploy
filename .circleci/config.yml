@@ -20,9 +20,9 @@ jobs:
       - go/save-cache
       - run: go test -v 2>&1 ./... | circleci tests split --split-by=timings | go-junit-report -set-exit-code > report.xml
       - store_test_results:
-          path: report.xml
+          path: /tmp/report.xml
       - store_artifacts:
-          path: report.xml
+          path: /tmp/report.xml
 
   integration:
     executor: go
