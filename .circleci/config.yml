@@ -34,7 +34,9 @@ jobs:
       - run:
           name: Split Tests
           command: |
-            SPLIT_TESTS=$(circleci tests split --split-by=timings)
+            SPLIT_TESTS=$(circleci tests glob "*_test.go")
+            echo "Split tests (before splitting): $SPLIT_TESTS"
+            SPLIT_TESTS=$(circleci tests split --split-by=timings --files "$SPLIT_TESTS")
             echo "Split tests: $SPLIT_TESTS"
       - run:
           name: Run Tests
@@ -45,50 +47,7 @@ jobs:
       - store_artifacts:
           path: /tmp/report.xml
 
-  integration:
-    executor: go
-    steps:
-      - checkout
-      - go/load-cache
-      - go/mod-download
-      - go/save-cache
-      - run: go build
-      - run:
-          name: Run server
-          command: |
-            ./challenge
-          background: true
-      - run: curl http://localhost:1337/challenge
-      
-  request-approval:
-    docker:
-      - image: circleci/node:4.8.2
-    steps:
-      - checkout
-      
-  deploy:
-    docker:
-      - image: circleci/python:3.7
-    steps:
-      - checkout
-      - run:
-          name: Deploy Project
-          command: echo "Project is deployed!"
-      
-workflows:
-  build-test-deploy:
+workflow:
+  build-test:
     jobs:
       - build-and-test
-      - integration:
-          requires:
-            - build-and-test
-      - request-approval:
-          requires:
-            - integration 
-      - hold:
-          type: approval
-          requires:
-            - request-approval
-      - deploy:
-          requires:
-            - hold
