@@ -32,6 +32,11 @@ jobs:
             TESTS=$(circleci tests glob "*test.go")
             echo "Test files: $TESTS"
       - run:
+          name: Split Tests
+          command: |
+            SPLIT_TESTS=$(circleci tests split --split-by=timings)
+            echo "Split tests: $SPLIT_TESTS"
+      - run:
           name: Run Tests
           command: |
             go test -v $(circleci tests glob "$SPLIT_TESTS") 2>&1 | go-junit-report -set-exit-code > /tmp/report.xml
