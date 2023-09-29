@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            go test -v $(circleci tests glob "$SPLIT_TESTS") 2>&1 | go-junit-report -set-exit-code > /tmp/report.xml
+            go test -v $(circleci tests glob "$TESTS") 2>&1 | go-junit-report -set-exit-code > /tmp/report.xml
       - store_test_results:
           path: /tmp/report.xml
       - store_artifacts:
