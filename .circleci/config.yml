@@ -29,18 +29,8 @@ jobs:
       - run:
           name: Matching Test Files
           command: |
-            TESTS=$(circleci tests glob "*_test.go")
+            TESTS=$(circleci tests glob "*test.go")
             echo "Test files: $TESTS"
-            echo "Number of test files: $(echo "$TESTS" | wc -l)"
-      - run:
-          name: Split Tests
-          command: |
-            SPLIT_TESTS=$(circleci tests glob "*_test.go")
-            echo "Split tests (before splitting): $SPLIT_TESTS"
-            echo "Number of split tests before splitting: $(echo "$SPLIT_TESTS" | wc -l)"
-            SPLIT_TESTS=$(circleci tests split --split-by=timings --files "$SPLIT_TESTS")
-            echo "Split tests: $SPLIT_TESTS"
-            echo "Number of split tests: $(echo "$SPLIT_TESTS" | wc -l)"
       - run:
           name: Run Tests
           command: |
@@ -50,7 +40,51 @@ jobs:
       - store_artifacts:
           path: /tmp/report.xml
 
-workflow:
-  build-test:
+  integration:
+    executor: go
+    steps:
+      - checkout
+      - go/load-cache
+      - go/mod-download
+      - go/save-cache
+      - run: go build
+      - run:
+          name: Run server
+          command: |
+            ./challenge
+          background: true
+      - run: curl http://localhost:1337/challenge
+      
+  request-approval:
+    docker:
+      - image: circleci/node:4.8.2
+    steps:
+      - checkout
+      
+  deploy:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Deploy Project
+          command: echo "Project is deployed!"
+      
+workflows:
+  build-test-deploy:
     jobs:
       - build-and-test
+      - integration:
+          requires:
+            - build-and-test
+      - request-approval:
+          requires:
+            - integration 
+      - hold:
+          type: approval
+          requires:
+            - request-approval
+      - deploy:
+          requires:
+            - hold
+            
