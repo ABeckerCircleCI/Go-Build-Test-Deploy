@@ -16,31 +16,3 @@ func Test_2(t *testing.T) {
 func Test_3(t *testing.T) {
 	time.Sleep(5 * time.Second)
 }
-
-func Test_4(t *testing.T) {
-	time.Sleep(20 * time.Second)
-}
-
-func Test_5(t *testing.T) {
-	time.Sleep(25 * time.Second)
-}
-
-func Test_6(t *testing.T) {
-	time.Sleep(15 * time.Second)
-}
-
-func Test_7(t *testing.T) {
-	time.Sleep(5 * time.Second)
-}
-
-func Test_8(t *testing.T) {
-	time.Sleep(5 * time.Second)
-}
-
-func Test_9(t *testing.T) {
-	time.Sleep(5 * time.Second)
-}
-
-func Test_10(t *testing.T) {
-	time.Sleep(5 * time.Second)
-}
