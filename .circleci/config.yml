@@ -38,7 +38,7 @@ jobs:
       - store_test_results:
           path: /previous-test-results/report.xml
       - store_artifacts:
-          path: /previous-test-results/report.xml
+          path: /artifacts/report.xml
 
   integration:
     executor: go
