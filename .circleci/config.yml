@@ -31,13 +31,16 @@ jobs:
           command: |
             TESTS=$(circleci tests glob "*_test.go")
             echo "Test files: $TESTS"
+            echo "Number of test files: $(echo "$TESTS" | wc -l)"
       - run:
           name: Split Tests
           command: |
             SPLIT_TESTS=$(circleci tests glob "*_test.go")
             echo "Split tests (before splitting): $SPLIT_TESTS"
+            echo "Number of split tests before splitting: $(echo "$SPLIT_TESTS" | wc -l)"
             SPLIT_TESTS=$(circleci tests split --split-by=timings --files "$SPLIT_TESTS")
             echo "Split tests: $SPLIT_TESTS"
+            echo "Number of split tests: $(echo "$SPLIT_TESTS" | wc -l)"
       - run:
           name: Run Tests
           command: |
