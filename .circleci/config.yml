@@ -19,14 +19,6 @@ jobs:
       - run: go install github.com/jstemmer/go-junit-report/v2@latest
       - go/save-cache
       - run:
-          name: Download Previous Test Results
-          command: |
-            mkdir -p previous-test-results
-            circleci tests glob "previous-test-results/*.xml" > previous-test-results/previous-results.txt
-            while IFS= read -r line; do
-              circleci tests store-previous-results --output-path "$line"
-            done < previous-test-results/previous-results.txt
-      - run:
           name: Matching Test Files
           command: |
             TESTS=$(circleci tests glob "*test.go")
@@ -36,9 +28,9 @@ jobs:
           command: |
             go test -v $(circleci tests glob "$TESTS") 2>&1 | go-junit-report -set-exit-code > /tmp/report.xml
       - store_test_results:
-          path: /previous-test-results/report.xml
+          path: /tmp/report.xml
       - store_artifacts:
-          path: /artifacts/report.xml
+          path: /tmp/artifact.xml
 
   integration:
     executor: go
