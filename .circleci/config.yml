@@ -11,9 +11,11 @@ executors:
 jobs:
   build-and-test:
     executor: go
-    parallelism: 4 
     environment:
-        TEST_RESULTS: /tmp/test-results/logs
+      TEST_RESULTS: /tmp/test-results/logs
+    parallelism: 4 
+    working_directory: /tmp
+    
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS
