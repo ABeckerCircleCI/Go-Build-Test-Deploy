@@ -13,7 +13,7 @@ jobs:
     executor: go
     parallelism: 4 
     environment:
-        TEST_RESULTS: /tmp/test-results
+        TEST_RESULTS: /tmp/test-results/logs
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS
