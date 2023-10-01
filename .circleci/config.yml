@@ -62,13 +62,17 @@ jobs:
       - checkout
       
   deploy:
-    docker:
-      - image: circleci/python:3.7
+    executor: go
     steps:
       - checkout
+      - go/load-cache
+      - go/mod-download
+      - go/save-cache
       - run:
-          name: Deploy Project
-          command: echo "Project is deployed!"
+          name: Deploying latest release
+          command: |
+            cd deploy
+            go run deploy.go
       
 workflows:
   build-test-deploy:
