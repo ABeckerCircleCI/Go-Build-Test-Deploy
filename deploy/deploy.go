@@ -10,7 +10,7 @@ func incrementRelease() {
 	Release++
 
 	// Print the new value of Release
-	fmt.Printf("Release: update to %d\n")
+	fmt.Printf("Release updated to version: %d\n", Release)
 }
 
 func main() {
